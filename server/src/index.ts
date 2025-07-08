@@ -23,19 +23,19 @@ function broadcast() {
   for (const [k] of connections) {
     const connection = connections.get(k);
     const message = JSON.stringify(Object.fromEntries(users));
-    console.log(message);
     if (connection) connection.send(message);
   }
 }
 
 function handleMessage(bytes: WebSocket.RawData, uuid: crypto.UUID) {
-  // message = {"x": 0, "y": 100}
   const message: Position = JSON.parse(bytes.toString());
   const currentUser = users.get(uuid);
   if (currentUser) {
     currentUser.state = message;
     broadcast();
-    console.log(`${currentUser.username} updated their state: ${currentUser.state}`);
+    console.log(
+      `${currentUser.username} updated their state: ${currentUser.state.x} ${currentUser.state.y} `,
+    );
   }
 }
 
